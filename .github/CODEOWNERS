@@ -1,0 +1,5 @@
+# Default owners for the entire repository
+* @e2b-dev/maintainers
+
+# Template-specific ownership
+/templates/ @e2b-dev/maintainers

@@ -1,0 +1,13 @@
+[project]
+name = "e2b-sandbox-templates"
+version = "0.1.0"
+description = "Pre-built sandbox templates for the E2B platform"
+requires-python = ">=3.9"
+dependencies = [
+    "e2b",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
