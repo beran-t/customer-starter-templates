@@ -62,9 +62,13 @@ jobs:
       - name: Install E2B CLI
         run: npm install -g @e2b/cli
 
-      - name: Build template
+      - name: Build template via CLI
         working-directory: templates/${{ matrix.template }}
         run: e2b template build
+
+      - name: Build template via SDK
+        if: hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
+        run: npx tsx templates/${{ matrix.template }}/build.ts
 
       - name: Run Python example
         run: python templates/${{ matrix.template }}/example.py
