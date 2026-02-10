@@ -19,7 +19,7 @@ export const template = Template()
     "tb run --help"
   ])
 
-Template.build(template, 'e2b-tbench', {
+Template.build(template, 'tbench', {
   cpuCount: 2,
   memoryMB: 4096,
   onBuildLogs: defaultBuildLogger(),

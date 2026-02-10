@@ -1,6 +1,6 @@
 import { Sandbox } from 'e2b';
 
-const sbx = await Sandbox.create('e2b-tbench', { timeoutMs: 60_000 });
+const sbx = await Sandbox.create('tbench', { timeoutMs: 60_000 });
 try {
   // Verify tmux is installed
   const tmux = await sbx.commands.run('tmux -V');

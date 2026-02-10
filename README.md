@@ -8,7 +8,7 @@ Pre-built sandbox templates for the [E2B](https://e2b.dev) platform. Each templa
 
 | Name | Template ID | Description |
 |------|-------------|-------------|
-| [e2b-tbench](templates/e2b-tbench/) | `e2b-tbench` | Terminal-bench sandbox with Docker, Harbor, and uv |
+| [tbench](templates/tbench/) | `tbench` | Terminal-bench sandbox with Docker, Harbor, and uv |
 
 ## Quickstart
 
