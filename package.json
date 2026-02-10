@@ -2,12 +2,14 @@
   "name": "e2b-sandbox-templates",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Pre-built sandbox templates for the E2B platform",
   "scripts": {
     "test": "vitest run"
   },
   "dependencies": {
-    "e2b": "^1.0.0"
+    "dotenv": "^16.0.0",
+    "e2b": "latest"
   },
   "devDependencies": {
     "tsx": "^4.0.0",

@@ -14,6 +14,16 @@ if [ ! -d "$TEMPLATE_DIR" ]; then
   exit 1
 fi
 
+if [ -f "$TEMPLATE_DIR/e2b.Dockerfile" ]; then
+  echo "Building template via CLI for $TEMPLATE_NAME..."
+  (cd "$TEMPLATE_DIR" && e2b template build)
+fi
+
+if [ -f "$TEMPLATE_DIR/build.ts" ]; then
+  echo "Building template via SDK for $TEMPLATE_NAME..."
+  npx tsx "$TEMPLATE_DIR/build.ts"
+fi
+
 echo "Running Python example for $TEMPLATE_NAME..."
 python "$TEMPLATE_DIR/example.py"
 

@@ -29,7 +29,7 @@ Create `templates/my-template/example.py`:
 ```python
 from e2b import Sandbox
 
-sbx = Sandbox("my-template", timeout=60)
+sbx = Sandbox.create("my-template", timeout=60)
 try:
     result = sbx.commands.run("echo 'hello'")
     assert result.exit_code == 0

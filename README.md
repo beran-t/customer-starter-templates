@@ -8,6 +8,7 @@ Pre-built sandbox templates for the [E2B](https://e2b.dev) platform. Each templa
 
 | Name | Template ID | Description |
 |------|-------------|-------------|
+| [tbench](templates/tbench/) | `tbench` | Terminal-bench sandbox with Docker, Harbor, and uv |
 
 ## Quickstart
 
@@ -28,7 +29,7 @@ Use a template to create a sandbox:
 ```python
 from e2b import Sandbox
 
-sbx = Sandbox("<template-name>", timeout=60)
+sbx = Sandbox.create("<template-name>", timeout=60)
 try:
     result = sbx.commands.run("echo 'hello'")
     print(result.stdout)

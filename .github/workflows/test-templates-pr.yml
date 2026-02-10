@@ -40,6 +40,7 @@ jobs:
         template: ${{ fromJson(needs.detect-changes.outputs.templates) }}
     env:
       E2B_ACCESS_TOKEN: ${{ secrets.E2B_ACCESS_TOKEN }}
+      E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -62,9 +63,14 @@ jobs:
       - name: Install E2B CLI
         run: npm install -g @e2b/cli
 
-      - name: Build template
+      - name: Build template via CLI
+        if: hashFiles(format('templates/{0}/e2b.Dockerfile', matrix.template)) != ''
         working-directory: templates/${{ matrix.template }}
         run: e2b template build
+
+      - name: Build template via SDK
+        if: hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
+        run: npx tsx templates/${{ matrix.template }}/build.ts
 
       - name: Run Python example
         run: python templates/${{ matrix.template }}/example.py
