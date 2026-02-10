@@ -59,6 +59,7 @@ jobs:
         run: npm install -g @e2b/cli
 
       - name: Build template via CLI
+        if: hashFiles(format('templates/{0}/e2b.Dockerfile', matrix.template)) != ''
         working-directory: templates/${{ matrix.template }}
         run: e2b template build
 
