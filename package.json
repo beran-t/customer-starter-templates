@@ -2,6 +2,7 @@
   "name": "e2b-sandbox-templates",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Pre-built sandbox templates for the E2B platform",
   "scripts": {
     "test": "vitest run"
