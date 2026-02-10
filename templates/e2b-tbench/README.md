@@ -27,7 +27,7 @@ A sandbox template for running [terminal-bench](https://github.com/terminal-benc
 ```python
 from e2b import Sandbox
 
-sbx = Sandbox("e2b-tbench", timeout=60)
+sbx = Sandbox.create("e2b-tbench", timeout=60)
 try:
     result = sbx.commands.run("tb run --help")
     print(result.stdout)

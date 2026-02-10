@@ -1,6 +1,6 @@
 from e2b import Sandbox
 
-sbx = Sandbox("e2b-tbench", timeout=60)
+sbx = Sandbox.create("e2b-tbench", timeout=60)
 try:
     # Verify tmux is installed
     result = sbx.commands.run("tmux -V")

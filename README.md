@@ -29,7 +29,7 @@ Use a template to create a sandbox:
 ```python
 from e2b import Sandbox
 
-sbx = Sandbox("<template-name>", timeout=60)
+sbx = Sandbox.create("<template-name>", timeout=60)
 try:
     result = sbx.commands.run("echo 'hello'")
     print(result.stdout)
