@@ -36,6 +36,7 @@ jobs:
         template: ${{ fromJson(needs.detect-changes.outputs.templates) }}
     env:
       E2B_ACCESS_TOKEN: ${{ secrets.E2B_ACCESS_TOKEN }}
+      E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
