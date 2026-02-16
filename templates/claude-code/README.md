@@ -53,11 +53,3 @@ try {
   await sbx.kill();
 }
 ```
-
-## Building
-
-This template uses the programmatic E2B Template builder:
-
-```bash
-npx tsx templates/claude-code/build.ts
-```
