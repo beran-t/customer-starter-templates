@@ -6,6 +6,7 @@ export const template = Template()
   .aptInstall(["curl"])
   .runCmd([
     "curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash",
+    "source ~/.bashrc && sudo ln -sf $(which openclaw) /usr/local/bin/openclaw",
   ])
 
 Template.build(template, 'openclaw', {
