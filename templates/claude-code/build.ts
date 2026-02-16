@@ -62,9 +62,9 @@ export const template = Template()
     "sudo rm -rf /opt/mcp-gateway-src /usr/local/go",
   ])
 
-  .setWorkdir("/etc/mcp-gateway")
+  .setWorkdir("/home/user")
 
-Template.build(template, 'claude-mcp', {
+Template.build(template, 'claude-code', {
   cpuCount: 4,
   memoryMB: 8192,
   onBuildLogs: defaultBuildLogger(),

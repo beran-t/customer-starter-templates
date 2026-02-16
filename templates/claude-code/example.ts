@@ -1,6 +1,6 @@
 import { Sandbox } from 'e2b';
 
-const sbx = await Sandbox.create('claude-mcp', { timeoutMs: 60_000 });
+const sbx = await Sandbox.create('claude-code', { timeoutMs: 60_000 });
 try {
   // Verify Docker is available
   const docker = await sbx.commands.run('docker --version');

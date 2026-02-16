@@ -1,6 +1,6 @@
 from e2b import Sandbox
 
-sbx = Sandbox.create("claude-mcp", timeout=60)
+sbx = Sandbox.create("claude-code", timeout=60)
 try:
     # Verify Docker is available
     result = sbx.commands.run("docker --version")

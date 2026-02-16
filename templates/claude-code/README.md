@@ -1,10 +1,10 @@
-# claude-mcp
+# claude-code
 
 A sandbox template for running Claude Code with MCP gateway support. Includes Docker, Node.js 22, Python 3, and a custom mcp-gateway binary compiled from source with a fix that enables MCP tool discovery.
 
 ## Template ID
 
-`claude-mcp`
+`claude-code`
 
 ## What's Pre-installed
 
@@ -32,7 +32,7 @@ A sandbox template for running Claude Code with MCP gateway support. Includes Do
 ```python
 from e2b import Sandbox
 
-sbx = Sandbox.create("claude-mcp", timeout=60)
+sbx = Sandbox.create("claude-code", timeout=60)
 try:
     result = sbx.commands.run("claude --version")
     print(result.stdout)
@@ -45,7 +45,7 @@ finally:
 ```typescript
 import { Sandbox } from 'e2b';
 
-const sbx = await Sandbox.create('claude-mcp', { timeoutMs: 60_000 });
+const sbx = await Sandbox.create('claude-code', { timeoutMs: 60_000 });
 try {
   const result = await sbx.commands.run('claude --version');
   console.log(result.stdout);
@@ -59,5 +59,5 @@ try {
 This template uses the programmatic E2B Template builder:
 
 ```bash
-npx tsx templates/claude-mcp/build.ts
+npx tsx templates/claude-code/build.ts
 ```
