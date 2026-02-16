@@ -12,17 +12,13 @@ Create a new directory under `templates/` with your template name:
 mkdir templates/my-template
 ```
 
-### 2. Add the E2B configuration
+### 2. Add a build file
 
-Create `templates/my-template/e2b.toml`:
-
-```toml
-template_name = "my-template"
-```
-
-Create `templates/my-template/e2b.Dockerfile` with the environment setup for your template.
+Create `templates/my-template/build.ts` (programmatic build using the E2B SDK) or `templates/my-template/e2b.Dockerfile` with the environment setup for your template.
 
 ### 3. Write example files
+
+The example files create a sandbox and verify all custom-installed tools work from the user's perspective.
 
 Create `templates/my-template/example.py`:
 
@@ -31,9 +27,10 @@ from e2b import Sandbox
 
 sbx = Sandbox.create("my-template", timeout=60)
 try:
-    result = sbx.commands.run("echo 'hello'")
-    assert result.exit_code == 0
-    # Add template-specific verification here
+    result = sbx.commands.run("my-tool --version")
+    assert result.exit_code == 0, f"my-tool check failed: {result.stderr}"
+
+    print("All checks passed.")
 finally:
     sbx.kill()
 ```
@@ -45,9 +42,10 @@ import { Sandbox } from 'e2b';
 
 const sbx = await Sandbox.create('my-template', { timeoutMs: 60_000 });
 try {
-  const result = await sbx.commands.run('echo "hello"');
-  if (result.exitCode !== 0) throw new Error('Command failed');
-  // Add template-specific verification here
+  const myTool = await sbx.commands.run('my-tool --version');
+  if (myTool.exitCode !== 0) throw new Error(`my-tool check failed: ${myTool.stderr}`);
+
+  console.log('All checks passed.');
 } finally {
   await sbx.kill();
 }

@@ -19,9 +19,11 @@ if [ -z "$changed_files" ]; then
 fi
 
 # Extract unique template directory names (first path component after templates/)
+# Filter out templates whose directories no longer exist (i.e. deleted templates)
 templates=$(echo "$changed_files" \
   | sed -n 's|^templates/\([^/]*\)/.*|\1|p' \
-  | sort -u)
+  | sort -u \
+  | while IFS= read -r name; do [ -d "templates/$name" ] && echo "$name" || true; done)
 
 if [ -z "$templates" ]; then
   echo "[]"
