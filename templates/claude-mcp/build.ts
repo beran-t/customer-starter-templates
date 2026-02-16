@@ -54,7 +54,7 @@ export const template = Template()
   // --- Copy gateway source and compile ---
   .copy("./mcp-gateway-src", "/opt/mcp-gateway-src")
   .runCmd([
-    "cd /opt/mcp-gateway-src && export PATH=$PATH:/usr/local/go/bin && go build -o /tmp/type-gen ./cmd/type-gen && /tmp/type-gen && CGO_ENABLED=0 go build -o /tmp/mcp-gateway ./cmd/gateway && sudo cp /tmp/mcp-gateway /usr/local/bin/mcp-gateway && sudo chmod +x /usr/local/bin/mcp-gateway && sudo mkdir -p /etc/mcp-gateway && sudo cp mapping.json /etc/mcp-gateway/ && sudo cp docker-catalog.yaml /etc/mcp-gateway/",
+    "cp -r /opt/mcp-gateway-src /tmp/mcp-build && cd /tmp/mcp-build && export PATH=$PATH:/usr/local/go/bin && go build -o /tmp/type-gen ./cmd/type-gen && /tmp/type-gen && CGO_ENABLED=0 go build -o /tmp/mcp-gateway ./cmd/gateway && sudo cp /tmp/mcp-gateway /usr/local/bin/mcp-gateway && sudo chmod +x /usr/local/bin/mcp-gateway && sudo mkdir -p /etc/mcp-gateway && sudo cp mapping.json /etc/mcp-gateway/ && sudo cp docker-catalog.yaml /etc/mcp-gateway/",
   ])
 
   // --- Clean up build artifacts ---
