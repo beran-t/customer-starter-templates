@@ -23,7 +23,7 @@ fi
 templates=$(echo "$changed_files" \
   | sed -n 's|^templates/\([^/]*\)/.*|\1|p' \
   | sort -u \
-  | while IFS= read -r name; do [ -d "templates/$name" ] && echo "$name"; done)
+  | while IFS= read -r name; do [ -d "templates/$name" ] && echo "$name" || true; done)
 
 if [ -z "$templates" ]; then
   echo "[]"
