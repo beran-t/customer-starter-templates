@@ -10,5 +10,7 @@ export const template = Template()
   ])
 
 Template.build(template, 'opencode', {
+  cpuCount: 2,
+  memoryMB: 2048,
   onBuildLogs: defaultBuildLogger(),
 })

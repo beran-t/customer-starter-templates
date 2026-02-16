@@ -10,5 +10,7 @@ export const template = Template()
   ])
 
 Template.build(template, 'amp-code', {
+  cpuCount: 2,
+  memoryMB: 2048,
   onBuildLogs: defaultBuildLogger(),
 })
