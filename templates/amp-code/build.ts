@@ -9,6 +9,6 @@ export const template = Template()
     'echo \'export PATH="$HOME/.local/bin:$PATH"\' >> ~/.bashrc',
   ])
 
-Template.build(template, 'amp', {
+Template.build(template, 'amp-code', {
   onBuildLogs: defaultBuildLogger(),
 })

@@ -1,10 +1,10 @@
-# amp
+# amp-code
 
 A sandbox template with the [AMP](https://ampcode.com) CLI pre-installed.
 
 ## Template ID
 
-`amp`
+`amp-code`
 
 ## What's Pre-installed
 
@@ -17,7 +17,7 @@ A sandbox template with the [AMP](https://ampcode.com) CLI pre-installed.
 ```python
 from e2b import Sandbox
 
-sbx = Sandbox.create("amp", timeout=60)
+sbx = Sandbox.create("amp-code", timeout=60)
 try:
     result = sbx.commands.run("amp --version")
     print(result.stdout)
@@ -30,7 +30,7 @@ finally:
 ```typescript
 import { Sandbox } from 'e2b';
 
-const sbx = await Sandbox.create('amp', { timeoutMs: 60_000 });
+const sbx = await Sandbox.create('amp-code', { timeoutMs: 60_000 });
 try {
   const result = await sbx.commands.run('amp --version');
   console.log(result.stdout);
