@@ -54,15 +54,23 @@ export const template = Template()
   // --- Copy gateway source and compile ---
   .copy("./mcp-gateway-src", "/opt/mcp-gateway-src")
   .runCmd([
-    "cp -r /opt/mcp-gateway-src /tmp/mcp-build && cd /tmp/mcp-build && export PATH=$PATH:/usr/local/go/bin && go build -o /tmp/type-gen ./cmd/type-gen && /tmp/type-gen && CGO_ENABLED=0 go build -o /tmp/mcp-gateway ./cmd/gateway && sudo cp /tmp/mcp-gateway /usr/local/bin/mcp-gateway && sudo chmod +x /usr/local/bin/mcp-gateway && sudo mkdir -p /etc/mcp-gateway && sudo cp mapping.json /etc/mcp-gateway/ && sudo cp docker-catalog.yaml /etc/mcp-gateway/",
+    "cp -r /opt/mcp-gateway-src /tmp/mcp-build && cd /tmp/mcp-build && export PATH=$PATH:/usr/local/go/bin && go build -o /tmp/type-gen ./cmd/type-gen && /tmp/type-gen && CGO_ENABLED=0 go build -o /tmp/mcp-gateway ./cmd/gateway",
+  ])
+
+  // --- Install mcp-gateway binary and config ---
+  .runCmd([
+    "sudo cp /tmp/mcp-gateway /usr/local/bin/mcp-gateway && sudo chmod +x /usr/local/bin/mcp-gateway",
+    "sudo mkdir -p /etc/mcp-gateway",
+    "sudo cp /tmp/mcp-build/mapping.json /etc/mcp-gateway/",
+    "sudo cp /tmp/mcp-build/docker-catalog.yaml /etc/mcp-gateway/",
   ])
 
   // --- Clean up build artifacts ---
   .runCmd([
-    "sudo rm -rf /opt/mcp-gateway-src /usr/local/go",
+    "sudo rm -rf /opt/mcp-gateway-src /usr/local/go /tmp/mcp-build /tmp/mcp-gateway /tmp/type-gen",
   ])
 
-  .setWorkdir("/home/user")
+  .setWorkdir("/etc/mcp-gateway")
 
 Template.build(template, 'claude-code', {
   cpuCount: 4,
