@@ -6,7 +6,7 @@ export const template = Template()
   .aptInstall(["curl"])
   .runCmd([
     "curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash",
-    "sudo find / -name openclaw -type f -perm /111 -not -path '*/node_modules/*' 2>/dev/null | head -1 | xargs -I{} sudo ln -sf {} /usr/local/bin/openclaw",
+    "echo 'export PATH=\"$HOME/.openclaw/bin:$PATH\"' >> ~/.bashrc",
   ])
 
 Template.build(template, 'openclaw', {
