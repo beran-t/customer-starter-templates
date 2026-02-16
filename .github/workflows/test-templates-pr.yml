@@ -71,15 +71,15 @@ jobs:
       - name: Build template via SDK
         if: hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
         env:
-          E2B_BUILD_TAG: dev
+          E2B_BUILD_TAG: dev-${{ github.event.pull_request.number }}
         run: npx tsx templates/${{ matrix.template }}/build.ts
 
       - name: Run Python example
         env:
-          E2B_TEMPLATE_TAG: dev
+          E2B_TEMPLATE_TAG: dev-${{ github.event.pull_request.number }}
         run: python templates/${{ matrix.template }}/example.py
 
       - name: Run TypeScript example
         env:
-          E2B_TEMPLATE_TAG: dev
+          E2B_TEMPLATE_TAG: dev-${{ github.event.pull_request.number }}
         run: npx tsx templates/${{ matrix.template }}/example.ts
