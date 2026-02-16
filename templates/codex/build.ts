@@ -4,7 +4,8 @@ import { Template, defaultBuildLogger } from 'e2b'
 export const template = Template()
   .fromBaseImage()
   .runCmd([
-    "sudo npm i -g @openai/codex",
+    "sed -i '/# If not running interactively/,/esac/d' ~/.bashrc",
+    "source ~/.bashrc && npm i -g @openai/codex",
   ])
 
 Template.build(template, 'codex', {
