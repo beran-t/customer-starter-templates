@@ -5,6 +5,7 @@ export const template = Template()
   .fromBaseImage()
   .aptInstall(["curl"])
   .runCmd([
+    "sed -i '/# If not running interactively/,/esac/d' ~/.bashrc",
     "curl -fsSL https://ampcode.com/install.sh | bash",
     'echo \'export PATH="$HOME/.local/bin:$PATH"\' >> ~/.bashrc',
   ])
