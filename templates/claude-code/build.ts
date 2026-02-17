@@ -1,6 +1,9 @@
 import "dotenv/config"
 import { Template, defaultBuildLogger } from 'e2b'
 
+const TEMPLATE_NAME = 'claude-code'
+const tag = process.env.E2B_BUILD_TAG || undefined
+
 export const template = Template()
   .fromUbuntuImage("25.04")
 
@@ -72,7 +75,7 @@ export const template = Template()
 
   .setWorkdir("/etc/mcp-gateway")
 
-Template.build(template, 'claude-code', {
+Template.build(template, tag ? `${TEMPLATE_NAME}:${tag}` : TEMPLATE_NAME, {
   cpuCount: 4,
   memoryMB: 8192,
   onBuildLogs: defaultBuildLogger(),

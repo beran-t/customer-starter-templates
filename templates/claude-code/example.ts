@@ -1,6 +1,9 @@
 import { Sandbox } from 'e2b';
 
-const sbx = await Sandbox.create('claude-code', { timeoutMs: 60_000 });
+const tag = process.env.E2B_TEMPLATE_TAG;
+const templateRef = tag ? `claude-code:${tag}` : 'claude-code';
+
+const sbx = await Sandbox.create(templateRef, { timeoutMs: 60_000 });
 try {
   const docker = await sbx.commands.run('docker --version');
   if (docker.exitCode !== 0) throw new Error(`docker check failed: ${docker.stderr}`);

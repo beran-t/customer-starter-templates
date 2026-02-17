@@ -26,7 +26,7 @@ jobs:
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           fi
 
-  smoke-test:
+  publish:
     needs: detect-changes
     if: needs.detect-changes.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
@@ -39,6 +39,8 @@ jobs:
       E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -59,6 +61,20 @@ jobs:
       - name: Install E2B CLI
         run: npm install -g @e2b/cli
 
+      - name: Read version
+        id: version
+        run: |
+          version=$(cat templates/${{ matrix.template }}/version | tr -d '[:space:]')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Template ${{ matrix.template }} version: $version"
+
+      - name: Check version not already published
+        run: |
+          if git tag -l "${{ matrix.template }}/v${{ steps.version.outputs.version }}" | grep -q .; then
+            echo "::error::Version ${{ steps.version.outputs.version }} already published for ${{ matrix.template }}. Bump the version file."
+            exit 1
+          fi
+
       - name: Build template via CLI
         if: hashFiles(format('templates/{0}/e2b.Dockerfile', matrix.template)) != ''
         working-directory: templates/${{ matrix.template }}
@@ -66,10 +82,24 @@ jobs:
 
       - name: Build template via SDK
         if: hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
+        env:
+          E2B_BUILD_TAG: dev
         run: npx tsx templates/${{ matrix.template }}/build.ts
 
       - name: Run Python example
+        env:
+          E2B_TEMPLATE_TAG: dev
         run: python templates/${{ matrix.template }}/example.py
 
       - name: Run TypeScript example
+        env:
+          E2B_TEMPLATE_TAG: dev
         run: npx tsx templates/${{ matrix.template }}/example.ts
+
+      - name: Promote template (assign version + lts tags)
+        run: npx tsx scripts/tag-template.ts ${{ matrix.template }}
+
+      - name: Create git tag
+        run: |
+          git tag "${{ matrix.template }}/v${{ steps.version.outputs.version }}"
+          git push origin "${{ matrix.template }}/v${{ steps.version.outputs.version }}"

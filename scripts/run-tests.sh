@@ -4,14 +4,23 @@ set -euo pipefail
 # Run Python and TypeScript example tests for a single template.
 #
 # Usage:
-#   ./scripts/run-tests.sh <template-name>
+#   ./scripts/run-tests.sh <template-name> [tag]
+#
+# If tag is provided, it is passed via E2B_BUILD_TAG (for build) and
+# E2B_TEMPLATE_TAG (for examples).
 
-TEMPLATE_NAME="${1:?Usage: run-tests.sh <template-name>}"
+TEMPLATE_NAME="${1:?Usage: run-tests.sh <template-name> [tag]}"
+TAG="${2:-}"
 TEMPLATE_DIR="templates/$TEMPLATE_NAME"
 
 if [ ! -d "$TEMPLATE_DIR" ]; then
   echo "Error: Template directory '$TEMPLATE_DIR' does not exist."
   exit 1
+fi
+
+if [ -n "$TAG" ]; then
+  export E2B_BUILD_TAG="$TAG"
+  export E2B_TEMPLATE_TAG="$TAG"
 fi
 
 if [ -f "$TEMPLATE_DIR/e2b.Dockerfile" ]; then

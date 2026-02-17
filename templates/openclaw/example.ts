@@ -1,6 +1,9 @@
 import { Sandbox } from 'e2b';
 
-const sbx = await Sandbox.create('openclaw', { timeoutMs: 60_000 });
+const tag = process.env.E2B_TEMPLATE_TAG;
+const templateRef = tag ? `openclaw:${tag}` : 'openclaw';
+
+const sbx = await Sandbox.create(templateRef, { timeoutMs: 60_000 });
 try {
   const openclaw = await sbx.commands.run('openclaw --version');
   if (openclaw.exitCode !== 0) throw new Error(`openclaw check failed: ${openclaw.stderr}`);
