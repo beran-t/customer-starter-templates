@@ -13,19 +13,44 @@ jobs:
       has_changes: ${{ steps.detect.outputs.has_changes }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Detect changed templates
         id: detect
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          templates=$(./scripts/detect-changed-templates.sh origin/${{ github.event.pull_request.base.ref }})
-          echo "templates=$templates" >> "$GITHUB_OUTPUT"
-          if [ "$templates" = "[]" ]; then
+          # Use GitHub API to get changed files from the PR
+          # (git diff doesn't work here because origin/main already contains the merge)
+          changed_files=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+
+          # Extract unique template names from changed paths
+          templates=$(echo "$changed_files" \
+            | sed -n 's|^templates/\([^/]*\)/.*|\1|p' \
+            | sort -u \
+            | while IFS= read -r name; do [ -d "templates/$name" ] && echo "$name" || true; done)
+
+          if [ -z "$templates" ]; then
+            echo "templates=[]" >> "$GITHUB_OUTPUT"
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          # Build JSON array
+          json="["
+          first=true
+          while IFS= read -r name; do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              json+=","
+            fi
+            json+="\"$name\""
+          done <<< "$templates"
+          json+="]"
+
+          echo "templates=$json" >> "$GITHUB_OUTPUT"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          echo "Detected changed templates: $json"
 
   publish:
     needs: detect-changes
