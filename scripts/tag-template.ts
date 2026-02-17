@@ -24,7 +24,7 @@ if (!/^\d+\.\d+\.\d+$/.test(version)) {
 }
 
 const sourceTag = process.env.E2B_SOURCE_TAG || 'dev'
-const tags = [`v${version}`, 'lts']
+const tags = [`v${version}`, 'lts', 'base']
 
 console.log(`Assigning tags ${JSON.stringify(tags)} to ${templateName}:${sourceTag}`)
 
