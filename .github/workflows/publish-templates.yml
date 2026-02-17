@@ -1,11 +1,12 @@
 name: Publish Templates
 
 on:
-  push:
-    branches: [main]
+  pull_request:
+    types: [closed]
 
 jobs:
   detect-changes:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
       templates: ${{ steps.detect.outputs.templates }}
@@ -18,7 +19,7 @@ jobs:
       - name: Detect changed templates
         id: detect
         run: |
-          templates=$(./scripts/detect-changed-templates.sh HEAD~1)
+          templates=$(./scripts/detect-changed-templates.sh origin/${{ github.event.pull_request.base.ref }})
           echo "templates=$templates" >> "$GITHUB_OUTPUT"
           if [ "$templates" = "[]" ]; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
@@ -42,24 +43,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Install Python dependencies
-        run: pip install e2b
-
       - name: Install Node.js dependencies
         run: npm install
-
-      - name: Install E2B CLI
-        run: npm install -g @e2b/cli
 
       - name: Read version
         id: version
@@ -75,28 +65,9 @@ jobs:
             exit 1
           fi
 
-      - name: Build template via CLI
-        if: hashFiles(format('templates/{0}/e2b.Dockerfile', matrix.template)) != ''
-        working-directory: templates/${{ matrix.template }}
-        run: e2b template build
-
-      - name: Build template via SDK
-        if: hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
+      - name: Promote template (assign version + lts + base tags)
         env:
-          E2B_BUILD_TAG: dev
-        run: npx tsx templates/${{ matrix.template }}/build.ts
-
-      - name: Run Python example
-        env:
-          E2B_TEMPLATE_TAG: dev
-        run: python templates/${{ matrix.template }}/example.py
-
-      - name: Run TypeScript example
-        env:
-          E2B_TEMPLATE_TAG: dev
-        run: npx tsx templates/${{ matrix.template }}/example.ts
-
-      - name: Promote template (assign version + lts tags)
+          E2B_SOURCE_TAG: dev-${{ github.event.pull_request.number }}
         run: npx tsx scripts/tag-template.ts ${{ matrix.template }}
 
       - name: Create git tag
