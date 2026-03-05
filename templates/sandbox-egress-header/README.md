@@ -13,33 +13,16 @@ A sandbox template that runs a transparent proxy ([mitmproxy](https://mitmproxy.
 - **System-wide CA certificate** — mitmproxy's CA is trusted so HTTPS interception works transparently
 - **Header injection** — Every outbound request gets an `X-Sandbox-ID` header set to the sandbox ID
 
-## Usage
+## How It Works
 
-### Python
+1. On sandbox start, a transparent [mitmproxy](https://mitmproxy.org/) proxy starts on port **18181**
+2. iptables rules redirect all outbound HTTP (80) and HTTPS (443) traffic through the proxy
+3. The proxy injects the sandbox ID as a header into every outbound request
+4. A compiled `sockmark.so` library (loaded via `LD_PRELOAD`) marks the proxy's own sockets so iptables skips them, preventing redirect loops
 
-```python
-from e2b import Sandbox
+## Configuration
 
-sbx = Sandbox.create("sandbox-egress-header", timeout=120)
-try:
-    # All outbound HTTP/HTTPS requests automatically include X-Sandbox-ID
-    result = sbx.commands.run("curl -s https://httpbin.org/headers")
-    print(result.stdout)
-finally:
-    sbx.kill()
-```
-
-### TypeScript
-
-```typescript
-import { Sandbox } from 'e2b';
-
-const sbx = await Sandbox.create('sandbox-egress-header', { timeoutMs: 120_000 });
-try {
-  // All outbound HTTP/HTTPS requests automatically include X-Sandbox-ID
-  const result = await sbx.commands.run('curl -s https://httpbin.org/headers');
-  console.log(result.stdout);
-} finally {
-  await sbx.kill();
-}
-```
+| Environment variable | Default | Description |
+|---|---|---|
+| `HEADER_NAME` | `X-Sandbox-ID` | Name of the header injected into outbound requests |
+| `PROXY_PORT` | `18181` | Port the transparent proxy listens on |

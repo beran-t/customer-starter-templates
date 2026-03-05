@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROXY_PORT="${PROXY_PORT:-8080}"
+PROXY_PORT="${PROXY_PORT:-18181}"
 ADDON_PATH="/opt/mitmproxy/add_header.py"
 SOCKMARK_LIB="/opt/mitmproxy/sockmark.so"
 CONFDIR="/root/.mitmproxy"
