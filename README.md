@@ -1,6 +1,6 @@
 # E2B Sandbox Templates
 
-![Test Templates](assets/test-templates-badge.svg)
+![E2B](assets/e2b_dev_logo.jpeg)
 
 Pre-built sandbox templates for the [E2B](https://e2b.dev) platform. Each template defines a reproducible environment that users can spin up as a sandbox using the E2B SDK.
 
