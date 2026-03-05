@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { Template, defaultBuildLogger } from 'e2b'
 
-const TEMPLATE_NAME = 'amp-code'
+const TEMPLATE_NAME = 'amp'
 const tag = process.env.E2B_BUILD_TAG || undefined
 
 export const template = Template()

@@ -1,7 +1,7 @@
 import { Sandbox } from 'e2b';
 
 const tag = process.env.E2B_TEMPLATE_TAG;
-const templateRef = tag ? `amp-code:${tag}` : 'amp-code';
+const templateRef = tag ? `amp:${tag}` : 'amp';
 
 const sbx = await Sandbox.create(templateRef, { timeoutMs: 60_000 });
 try {
