@@ -1,5 +1,6 @@
 # Customer Starter Templates
 
+![E2B](assets/e2b_dev_logo.jpeg)
 ![Test Templates](assets/test-templates-badge.svg)
 
 A collection of pre-built [E2B](https://e2b.dev) sandbox templates shipped to customers as ready-to-use starting points. Each template defines a reproducible sandbox environment with the tools, runtimes, and configurations needed for a specific coding agent or workflow.
