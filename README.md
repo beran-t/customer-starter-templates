@@ -9,6 +9,7 @@ Pre-built sandbox templates for the [E2B](https://e2b.dev) platform. Each templa
 | Name | Template ID | Description |
 |------|-------------|-------------|
 | [tbench](templates/tbench/) | `tbench` | Terminal-bench sandbox with Docker, Harbor, and uv |
+| [sandbox-egress-header](templates/sandbox-egress-header/) | `sandbox-egress-header` | Transparent proxy that injects X-Sandbox-ID header into all egress HTTP/HTTPS traffic |
 
 ## Quickstart
 
