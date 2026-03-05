@@ -8,8 +8,13 @@ Pre-built sandbox templates for the [E2B](https://e2b.dev) platform. Each templa
 
 | Name | Template ID | Description |
 |------|-------------|-------------|
-| [tbench](templates/tbench/) | `tbench` | Terminal-bench sandbox with Docker, Harbor, and uv |
+| [amp](templates/amp/) | `amp` | AMP CLI sandbox |
+| [claude](templates/claude/) | `claude` | Claude Code sandbox with Docker, Node.js 22, Python 3, and MCP gateway |
+| [codex](templates/codex/) | `codex` | OpenAI Codex CLI sandbox |
+| [openclaw](templates/openclaw/) | `openclaw` | OpenClaw CLI sandbox |
+| [opencode](templates/opencode/) | `opencode` | OpenCode CLI sandbox |
 | [sandbox-egress-header](templates/sandbox-egress-header/) | `sandbox-egress-header` | Transparent proxy that injects X-Sandbox-ID header into all egress HTTP/HTTPS traffic |
+| [tbench](templates/tbench/) | `tbench` | Terminal-bench sandbox with Docker, Harbor, and uv |
 
 ## Quickstart
 

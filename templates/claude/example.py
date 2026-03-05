@@ -2,7 +2,7 @@ import os
 from e2b import Sandbox
 
 tag = os.environ.get("E2B_TEMPLATE_TAG", "")
-template_ref = f"claude-code:{tag}" if tag else "claude-code"
+template_ref = f"claude:{tag}" if tag else "claude"
 
 sbx = Sandbox.create(template_ref, timeout=60)
 try:
