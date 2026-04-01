@@ -61,9 +61,20 @@ for (const tag of tags) {
   }
 }
 
+let failed = false
 for (const tag of tags) {
   const source = `${templateName}:${tag.reference}`
   console.log(`Assigning tag "${tag.name}" to ${source} (${tag.description})`)
-  await Template.assignTags(source, [tag.name])
-  console.log(`Successfully tagged ${source} as ${tag.name}`)
+  try {
+    await Template.assignTags(source, [tag.name])
+    console.log(`Successfully tagged ${source} as ${tag.name}`)
+  } catch (err) {
+    console.error(`::warning::Failed to assign tag "${tag.name}" to ${source}: ${err}`)
+    failed = true
+  }
+}
+
+if (failed) {
+  console.error('Some custom tags failed to assign. Check that the referenced tags exist on the E2B platform.')
+  process.exit(1)
 }
