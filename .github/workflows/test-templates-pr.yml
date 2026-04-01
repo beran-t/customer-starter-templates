@@ -71,30 +71,35 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Template ${{ matrix.template }} version: $version"
 
-      - name: Check version not already published
+      - name: Check if version already published
+        id: version_check
         run: |
           if git tag -l "${{ matrix.template }}/v${{ steps.version.outputs.version }}" | grep -q .; then
-            echo "::error::Version ${{ steps.version.outputs.version }} already published for ${{ matrix.template }}. Bump the version file."
-            exit 1
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${{ steps.version.outputs.version }} already published for ${{ matrix.template }}, skipping build and test."
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build template via CLI
-        if: hashFiles(format('templates/{0}/e2b.Dockerfile', matrix.template)) != ''
+        if: steps.version_check.outputs.already_published == 'false' && hashFiles(format('templates/{0}/e2b.Dockerfile', matrix.template)) != ''
         working-directory: templates/${{ matrix.template }}
         run: e2b template build
 
       - name: Build template via SDK
-        if: hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
+        if: steps.version_check.outputs.already_published == 'false' && hashFiles(format('templates/{0}/build.ts', matrix.template)) != ''
         env:
           E2B_BUILD_TAG: dev-${{ github.event.pull_request.number }}
         run: npx tsx templates/${{ matrix.template }}/build.ts
 
       - name: Run Python example
+        if: steps.version_check.outputs.already_published == 'false'
         env:
           E2B_TEMPLATE_TAG: dev-${{ github.event.pull_request.number }}
         run: python templates/${{ matrix.template }}/example.py
 
       - name: Run TypeScript example
+        if: steps.version_check.outputs.already_published == 'false'
         env:
           E2B_TEMPLATE_TAG: dev-${{ github.event.pull_request.number }}
         run: npx tsx templates/${{ matrix.template }}/example.ts
