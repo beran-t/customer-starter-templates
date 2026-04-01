@@ -90,21 +90,25 @@ try {
 
 ### 6. (Optional) Add custom tags
 
-If your template has notable characteristics consumers might want to pin to (e.g., a specific Python or Node.js version), create `templates/my-template/tags.json`:
+If your template has notable characteristics consumers might want to pin to (e.g., a specific Python or Node.js version), you can assign custom tags using the management script:
 
-```json
-[
-  {
-    "name": "python-3.12",
-    "reference": "v1.0.0",
-    "description": "Template with Python 3.12"
-  }
-]
+```bash
+# Add a custom tag
+npx tsx scripts/manage-custom-tags.ts add my-template \
+  --name python-3.12 \
+  --reference v1.0.0 \
+  --description "Template with Python 3.12"
+
+# List custom tags
+npx tsx scripts/manage-custom-tags.ts list my-template
+
+# Remove a custom tag
+npx tsx scripts/manage-custom-tags.ts remove my-template --name python-3.12
 ```
 
-Each entry assigns the custom tag `name` to the build identified by `reference` (any existing tag like `v1.0.0` or `lts`). Custom tags are assigned during the publish step. The file is optional — templates without it only get the standard tags.
+This creates/updates `templates/my-template/tags.json`. Each entry assigns the custom tag `name` to the build identified by `reference` (any existing tag like `v1.0.0` or `lts`). Custom tags are assigned during the publish step. The file is optional — templates without it only get the standard tags.
 
-Use an empty array `[]` or omit the file entirely if no custom tags are needed.
+You can also edit `tags.json` directly. Use an empty array `[]` or omit the file entirely if no custom tags are needed.
 
 ### 7. Write a README
 
