@@ -88,7 +88,25 @@ try {
 }
 ```
 
-### 6. Write a README
+### 6. (Optional) Add custom tags
+
+If your template has notable characteristics consumers might want to pin to (e.g., a specific Python or Node.js version), create `templates/my-template/tags.json`:
+
+```json
+[
+  {
+    "name": "python-3.12",
+    "reference": "v1.0.0",
+    "description": "Template with Python 3.12"
+  }
+]
+```
+
+Each entry assigns the custom tag `name` to the build identified by `reference` (any existing tag like `v1.0.0` or `lts`). Custom tags are assigned during the publish step. The file is optional — templates without it only get the standard tags.
+
+Use an empty array `[]` or omit the file entirely if no custom tags are needed.
+
+### 7. Write a README
 
 Create `templates/my-template/README.md` covering:
 
@@ -97,7 +115,7 @@ Create `templates/my-template/README.md` covering:
 - Usage examples in Python and TypeScript
 - What's pre-installed in the sandbox
 
-### 7. Test locally
+### 8. Test locally
 
 Run both example files to verify they work:
 
@@ -111,7 +129,7 @@ npx tsx templates/my-template/example.ts
 ./scripts/run-tests.sh my-template dev
 ```
 
-### 8. Open a PR
+### 9. Open a PR
 
 Open a pull request. CI will automatically build your template as `:dev` and run both example files against it.
 
@@ -133,8 +151,9 @@ Each template has a `version` file containing a semver string (e.g., `1.0.0`). B
 | `dev` | Latest build, may not be tested yet |
 | `vX.Y.Z` | Specific version, immutable |
 | `lts` | Latest tested + promoted version |
+| Custom (e.g., `python-3.12`) | Defined in `tags.json`, points to a specific build |
 
-Consumers should use `Sandbox.create('template:lts')` for stability.
+Consumers should use `Sandbox.create('template:lts')` for stability, or a custom tag like `Sandbox.create('template:python-3.12')` to pin to a specific capability.
 
 ### Environment variables
 
