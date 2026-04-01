@@ -55,8 +55,8 @@ for (const tag of tags) {
     process.exit(1)
   }
 
-  if (RESERVED.includes(tag.name) || /^v\d/.test(tag.name)) {
-    console.error(`Custom tag "${tag.name}" conflicts with reserved tags (lts, base, v*).`)
+  if (RESERVED.includes(tag.name) || /^v\d/.test(tag.name) || /^dev(-|$)/.test(tag.name)) {
+    console.error(`Custom tag "${tag.name}" conflicts with reserved tags (lts, base, v*, dev*).`)
     process.exit(1)
   }
 }
