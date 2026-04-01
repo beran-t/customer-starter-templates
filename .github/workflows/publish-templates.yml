@@ -98,6 +98,9 @@ jobs:
           E2B_SOURCE_TAG: dev-${{ github.event.pull_request.number }}
         run: npx tsx scripts/tag-template.ts ${{ matrix.template }}
 
+      - name: Assign custom tags
+        run: npx tsx scripts/assign-custom-tags.ts ${{ matrix.template }}
+
       - name: Create git tag
         run: |
           git tag "${{ matrix.template }}/v${{ steps.version.outputs.version }}"
