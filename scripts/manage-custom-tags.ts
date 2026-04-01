@@ -1,3 +1,5 @@
+import "dotenv/config"
+import { Template } from 'e2b'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
 
@@ -52,7 +54,8 @@ function writeTags(filePath: string, tags: CustomTag[]) {
 const usage = `Usage: npx tsx scripts/manage-custom-tags.ts <command> <template> [options]
 
 Commands:
-  list   <template>                                          List custom tags
+  builds <template>                                          List successful builds and their tags (requires E2B_API_KEY)
+  list   <template>                                          List custom tags from tags.json
   add    <template> --name <tag> --reference <ref> --description <desc>  Add a custom tag
   remove <template> --name <tag>                             Remove a custom tag`
 
@@ -77,6 +80,28 @@ function getArg(flag: string): string {
 const filePath = tagsFilePath(templateName)
 
 switch (command) {
+  case 'builds': {
+    const tags = await Template.getTags(templateName)
+
+    // Group tags by buildId
+    const tagsByBuild = new Map<string, string[]>()
+    for (const t of tags) {
+      const list = tagsByBuild.get(t.buildId) || []
+      list.push(t.tag)
+      tagsByBuild.set(t.buildId, list)
+    }
+
+    if (tagsByBuild.size === 0) {
+      console.log(`No successful builds with tags found for ${templateName}.`)
+    } else {
+      console.log(`Successful builds for ${templateName}:\n`)
+      for (const [buildId, buildTags] of tagsByBuild) {
+        console.log(`  ${buildId}  tags: ${buildTags.join(', ')}`)
+      }
+    }
+    break
+  }
+
   case 'list': {
     const tags = readTags(filePath)
     if (tags.length === 0) {
